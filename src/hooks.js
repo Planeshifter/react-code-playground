@@ -3,53 +3,45 @@
 import { useRef, useEffect, useState } from 'react';
 import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup';
 import { javascript } from '@codemirror/lang-javascript';
+import { helpPanel } from './help_panel.js';
 
 
 // EXPORTS //
 
 /**
- * Hook for the CodeMirror state.
+ * Hook for a CodeMirror instance.
  * 
  * @param {string} text - initial text
- * @returns {Object} CodeMirror editor state
+ * @returns {Node} CodeMirror dom view
  */
-export function useCodeMirrorState( text ) {
-	const [ editorState, setEditorState ] = useState( null );
+export function useCodeMirror( text ) {
+	const dom = useRef( document.createElement( 'div' ) );
+	const [ view, setView ] = useState( null );
+	const [ state, setState ] = useState( null );
 
 	useEffect( () => {
-		setEditorState( EditorState.create({
+		setState( EditorState.create({
 			extensions: [
 				basicSetup,
-				javascript()
+				javascript(),
+				helpPanel()
 			],
 			doc: text
 		}) );
 	}, [ text ] );
-	return editorState;
-}
-
-/**
- * Hook for the CodeMirror view.
- * 
- * @param {Object} editorState - CodeMirror editor state
- * @returns {Node} CodeMirror dom view
- */
-export function useCodeMirrorView( editorState ) {
-	const dom = useRef( document.createElement( 'div' ) );
-	const [ view, setView ] = useState( null );
 	useEffect( () => {
-		if ( !view && editorState ) {
+		if ( !view && state ) {
 			setView( new EditorView({
-				state: editorState, 
+				state: state, 
 				parent: dom.current
 			}) );
 		}
-	}, [ editorState, view ] );
+	}, [ state, view ] );
 
 	useEffect( () => {
-		if ( view && editorState && view.state !== editorState ) {
-			view.setState( editorState );
+		if ( view && state && view.state !== state ) {
+			view.setState( state );
 		}
-	}, [ editorState, view ] );
-	return dom;
+	}, [ state, view ] );
+	return { dom, view, state };
 }
