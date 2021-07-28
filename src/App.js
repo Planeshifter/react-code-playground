@@ -25,7 +25,7 @@ function useCodeMirrorState( text ) {
 			],
 			doc: text
 		}) );
-	}, [] );
+	}, [ text ] );
 	return editorState;
 }
 
@@ -42,14 +42,14 @@ function useCodeMirrorView( editorState ) {
 		if ( !view && editorState ) {
 			setView( new EditorView({
 				state: editorState, 
-				parent:dom.current
+				parent: dom.current
 			}) );
 		}
-	}, [ editorState ] );
+	}, [ editorState, view ] );
 
 	useEffect( () => {
 		if ( view && editorState && view.state !== editorState ) {
-			view.updateState( editorState );
+			view.setState( editorState );
 		}
 	}, [ editorState, view ] );
 	return dom;
