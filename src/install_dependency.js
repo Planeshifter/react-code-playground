@@ -29,6 +29,7 @@ import prunePackage from './prune_package.js';
 // VARIABLES //
 
 const RE_REQUIRE_DEP = /require\( ['"]([^'"]+)['"] \)/;
+const RE_IMPORT_FROM = /from ['"]([^'"]+)['"]/;
 
 
 // MAIN //
@@ -73,7 +74,8 @@ function dependencies( view ) {
 		syntaxTree( view.state ).iterate({
 			from, to,
 			enter: ( type, from, to ) => {
-        if ( type.name === "CallExpression" ) {
+        console.log( type )
+        if ( type.name === 'CallExpression' ) {
           const call = view.state.doc.sliceString( from, to );
           const match = RE_REQUIRE_DEP.exec( call );
           if ( match ) {
@@ -83,7 +85,18 @@ function dependencies( view ) {
             });
             widgets.push( deco.range( to+1 ) );
           }
-				}
+        } 
+        else if ( type.name === 'ImportDeclaration' ) {
+          const call = view.state.doc.sliceString( from, to );
+          const match = RE_IMPORT_FROM.exec( call );
+          if ( match ) {
+            const deco = Decoration.widget({
+              widget: new InstallButtonWidget( match[ 1 ] ),
+              side: 1
+            });
+            widgets.push( deco.range( to ) );
+          }
+        } 
 			}
 		});
 	}
