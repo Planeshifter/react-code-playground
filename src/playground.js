@@ -12,6 +12,7 @@ import { useCodeMirror } from './hooks.js';
 // VARIABLES //
 
 const RE_STDLIB_PKG = /'(@stdlib\/[^']+)'/g;
+const RE_RETURN_ANNOTATION = /\/\/ returns [^\n]+/g;
 
 
 // MAIN //
@@ -24,6 +25,7 @@ const RE_STDLIB_PKG = /'(@stdlib\/[^']+)'/g;
  * @returns {ReactElement} playground component
  */
 function CodePlayground({ defaultValue }) {
+	defaultValue = replace( defaultValue, RE_RETURN_ANNOTATION, '// returns ' );
 	const { dom, view } = useCodeMirror( defaultValue );
 	const [ standalone, setStandalone ] = useState( false );
 
@@ -96,7 +98,7 @@ function CodePlayground({ defaultValue }) {
 				Reset ES6
 			</button>
 			<button onClick={togglePackages} >
-				Standalone Packages
+				Toggle between Standalone and Top-Level Packages
 			</button>
 			<button onClick={copyCodeToClipboard}>
 				Copy to clipboard

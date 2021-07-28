@@ -3,7 +3,8 @@
 import { useRef, useEffect, useState } from 'react';
 import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup';
 import { javascript } from '@codemirror/lang-javascript';
-import { helpPanel } from './help_panel.js';
+import helpPanel from './help_panel.js';
+import returnValuesPlugin from './return_values.js';
 
 
 // EXPORTS //
@@ -24,7 +25,8 @@ export function useCodeMirror( text ) {
 			extensions: [
 				basicSetup,
 				javascript(),
-				helpPanel()
+				helpPanel(),
+				returnValuesPlugin
 			],
 			doc: text
 		}) );

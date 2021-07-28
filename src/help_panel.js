@@ -40,6 +40,11 @@ const helpTheme = EditorView.baseTheme({
   }
 })
 
-export function helpPanel() {
+function helpPanel() {
   return [helpPanelState, keymap.of(helpKeymap), helpTheme]
 }
+
+
+// EXPORTS //
+
+export default helpPanel;

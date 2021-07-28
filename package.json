@@ -14,6 +14,7 @@
     "@stdlib/namespace-pkg2standalone": "0.0.3",
     "@stdlib/namespace-standalone2pkg": "0.0.3",
     "@stdlib/string-replace": "0.0.8",
+    "@stdlib/string-starts-with": "0.0.6",
     "clipboard-copy": "4.0.1",
     "lebab": "3.1.1",
     "react": "17.0.2",

@@ -2,3 +2,10 @@
   font-family: sans-serif;
   text-align: center;
 }
+
+.cm-return-annotation {
+  background-color: silver;
+  padding: 3px;
+  border-radius: 2px;
+  border: 1px black;
+}
